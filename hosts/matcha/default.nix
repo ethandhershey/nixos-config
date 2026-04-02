@@ -60,6 +60,8 @@
     home.stateVersion = "25.05";
 
     home.packages = with pkgs; [
+      nil
+      alejandra
       nodejs_22
     ];
   };
