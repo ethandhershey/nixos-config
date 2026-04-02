@@ -1,15 +1,29 @@
-{ pkgs, inputs, user, ... }: {
+{
+  pkgs,
+  inputs,
+  user,
+  ...
+}:
+{
   imports = [
     ./common.nix
     inputs.catppuccin.nixosModules.catppuccin
   ];
 
   users.users.${user.name} = {
-    extraGroups = [ "networkmanager" "audio" "video" "input" ];
+    extraGroups = [
+      "networkmanager"
+      "audio"
+      "video"
+      "input"
+    ];
   };
 
   # --- system ---
-  catppuccin = { enable = true; flavor = "mocha"; };
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
 
   programs.niri.enable = true;
   xdg.portal = {
@@ -50,61 +64,77 @@
   # --- home-manager ---
   home-manager.sharedModules = [
     inputs.noctalia.homeModules.default
-    ({pkgs, ...}: {
-      home.packages = with pkgs; [
-        mission-center
-      ];
-
-      programs.alacritty = {
-        enable = true;
-        settings = {
-          terminal.shell.program = "${pkgs.fish}/bin/fish";
-          window = {
-            padding = { x = 8; y = 8; };
-            decorations = "None";
-            dynamic_title = true;
-            # opacity = 0.95;
-          };
-          font = {
-            normal = { family = "JetBrainsMono Nerd Font"; style = "Regular"; };
-            bold   = { family = "JetBrainsMono Nerd Font"; style = "Bold"; };
-            italic = { family = "JetBrainsMono Nerd Font"; style = "Italic"; };
-            size = 13.0;
-          };
-          cursor.style = { shape = "Block"; blinking = "On"; };
-          scrolling.history = 10000;
-        };
-      };
-
-      programs.zed-editor = {
-        enable = true;
-        package = pkgs.zed-editor;
-      };
-
-      programs.chromium = {
-        enable = true;
-        package = pkgs.brave;
-        extensions = [
-          # { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+    (
+      { pkgs, ... }:
+      {
+        home.packages = with pkgs; [
+          mission-center
         ];
-      };
 
-      programs.noctalia-shell = {
-        enable = true;
-      };
-      services.cliphist.enable = true;
+        programs.alacritty = {
+          enable = true;
+          settings = {
+            terminal.shell.program = "${pkgs.fish}/bin/fish";
+            window = {
+              padding = {
+                x = 8;
+                y = 8;
+              };
+              decorations = "None";
+              dynamic_title = true;
+              # opacity = 0.95;
+            };
+            font = {
+              normal = {
+                family = "JetBrainsMono Nerd Font";
+                style = "Regular";
+              };
+              bold = {
+                family = "JetBrainsMono Nerd Font";
+                style = "Bold";
+              };
+              italic = {
+                family = "JetBrainsMono Nerd Font";
+                style = "Italic";
+              };
+              size = 13.0;
+            };
+            cursor.style = {
+              shape = "Block";
+              blinking = "On";
+            };
+            scrolling.history = 10000;
+          };
+        };
 
-      xdg.configFile."noctalia/settings.json".source =
-        "${inputs.self}/config/noctalia/settings.json";
-      xdg.configFile."niri/config.kdl".source =
-        "${inputs.self}/config/niri/config.kdl";
+        programs.zed-editor = {
+          enable = true;
+          package = pkgs.zed-editor;
+        };
 
-      home.pointerCursor = {
-        enable = true;
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Ice";
-        size = 22;
-      };
-    })
+        programs.chromium = {
+          enable = true;
+          package = pkgs.brave;
+          extensions = [
+            # { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+          ];
+        };
+
+        programs.noctalia-shell = {
+          enable = true;
+        };
+        services.cliphist.enable = true;
+
+        xdg.configFile."noctalia/settings.json".source = "${inputs.self}/config/noctalia/settings.json";
+        xdg.configFile."niri/config.kdl".source = "${inputs.self}/config/niri/config.kdl";
+
+        home.pointerCursor = {
+          enable = true;
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Ice";
+          size = 22;
+        };
+      }
+    )
   ];
 }

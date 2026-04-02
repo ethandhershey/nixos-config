@@ -1,4 +1,12 @@
-{ pkgs, inputs, config, lib, user, ... }: {
+{
+  pkgs,
+  inputs,
+  config,
+  lib,
+  user,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ../../modules/steam.nix
@@ -52,7 +60,7 @@
     package = pkgs.ollama-cuda;
   };
   # Disable autostart
-  systemd.services.ollama.wantedBy = lib.mkForce [];
+  systemd.services.ollama.wantedBy = lib.mkForce [ ];
 
   home-manager.users.${user.name} = {
     home.username = user.name;

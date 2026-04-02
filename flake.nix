@@ -30,45 +30,59 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, agenix, catppuccin, noctalia, ... }@inputs:
-  let
-    user = {
-      name     = "ethan";
-      gitName  = "ethandhershey";
-      gitEmail = "ethandhershey@gmail.com";
-    };
-
-    mkHost = system: hostName: nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = { inherit inputs user; };
-      modules = [
-        ./hosts/${hostName}
-        agenix.nixosModules.default
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.backupFileExtension = "backup";
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.sharedModules = [
-            catppuccin.homeModules.catppuccin
-          ];
-        }
-      ];
-    };
-  in {
-    nixosConfigurations = {
-      homelab = mkHost "x86_64-linux" "homelab";
-      matcha = mkHost "x86_64-linux" "matcha";
-      framework  = mkHost "x86_64-linux" "framework";
-    };
-
-    devShells.x86_64-linux.default =
-      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      in pkgs.mkShell {
-        packages = with pkgs; [
-          nodejs
-          # whatever else
-        ];
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      agenix,
+      catppuccin,
+      noctalia,
+      ...
+    }@inputs:
+    let
+      user = {
+        name = "ethan";
+        gitName = "ethandhershey";
+        gitEmail = "ethandhershey@gmail.com";
       };
-  };
+
+      mkHost =
+        system: hostName:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs user; };
+          modules = [
+            ./hosts/${hostName}
+            agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.backupFileExtension = "backup";
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [
+                catppuccin.homeModules.catppuccin
+              ];
+            }
+          ];
+        };
+    in
+    {
+      nixosConfigurations = {
+        homelab = mkHost "x86_64-linux" "homelab";
+        matcha = mkHost "x86_64-linux" "matcha";
+        framework = mkHost "x86_64-linux" "framework";
+      };
+
+      devShells.x86_64-linux.default =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        in
+        pkgs.mkShell {
+          packages = with pkgs; [
+            nodejs
+            # whatever else
+          ];
+        };
+    };
 }

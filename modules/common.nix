@@ -1,8 +1,17 @@
-{ pkgs, inputs, user, ... }: {
+{
+  pkgs,
+  inputs,
+  user,
+  ...
+}:
+{
   users.users.${user.name} = {
     isNormalUser = true;
     shell = pkgs.fish;
-    extraGroups = [ "wheel" "netbird-wt0" ];
+    extraGroups = [
+      "wheel"
+      "netbird-wt0"
+    ];
     openssh.authorizedKeys.keys = [
       # "ssh-ed25519 CHANGEME ethan@desktop"
     ];
@@ -10,7 +19,10 @@
 
   # --- system ---
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     auto-optimise-store = true;
   };
 
@@ -32,7 +44,7 @@
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
-  programs ={
+  programs = {
     fish.enable = true;
 
     direnv = {
@@ -71,47 +83,49 @@
   services.resolved.enable = true;
 
   # --- home-manager ---
-  home-manager.sharedModules = [{
-    home.sessionPath = [ "$HOME/.cargo/bin" ];
+  home-manager.sharedModules = [
+    {
+      home.sessionPath = [ "$HOME/.cargo/bin" ];
 
-    home.packages = with pkgs; [
-      eza
-      bat
-      ripgrep
-      fd
-      jq
-      bottom
-      just
-    ];
+      home.packages = with pkgs; [
+        eza
+        bat
+        ripgrep
+        fd
+        jq
+        bottom
+        just
+      ];
 
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-      accent = "mauve";
-    };
-
-    programs.starship.enable = true;
-
-    programs.fish = {
-      enable = true;
-      shellAbbrs = {
-        ls  = "eza";
-        ll  = "eza -lh";
-        la  = "eza -lha";
-        cat = "bat";
-        rg  = "rg --smart-case";
+      catppuccin = {
+        enable = true;
+        flavor = "mocha";
+        accent = "mauve";
       };
-      interactiveShellInit = "set fish_greeting";
-    };
 
-    programs.bat.enable = true;
+      programs.starship.enable = true;
 
-    programs.git = {
-      enable = true;
-      settings = {
-        user.name = user.gitName;
-        user.email = user.gitEmail;
+      programs.fish = {
+        enable = true;
+        shellAbbrs = {
+          ls = "eza";
+          ll = "eza -lh";
+          la = "eza -lha";
+          cat = "bat";
+          rg = "rg --smart-case";
+        };
+        interactiveShellInit = "set fish_greeting";
       };
-    };
-  }];
+
+      programs.bat.enable = true;
+
+      programs.git = {
+        enable = true;
+        settings = {
+          user.name = user.gitName;
+          user.email = user.gitEmail;
+        };
+      };
+    }
+  ];
 }
