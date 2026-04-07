@@ -19,9 +19,15 @@ input {
     }
 }
 
+output "DP-1" {
+    mode "2560x1440@144.000"
+    variable-refresh-rate on-demand=true
+    // transform "normal"
+}
+
 output "DP-2" {
     mode "2560x1440@144.000"
-    scale 1.0
+    variable-refresh-rate on-demand=true
     // transform "normal"
 }
 

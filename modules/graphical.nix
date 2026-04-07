@@ -69,6 +69,7 @@
       {
         home.packages = with pkgs; [
           mission-center
+          nautilus
         ];
 
         programs.alacritty = {
