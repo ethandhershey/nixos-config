@@ -7,13 +7,15 @@
 }:
 let
   llama-cpp =
-    (pkgs.llama-cpp.overrideAttrs (attrs: {
+    (pkgs.llama-cpp.overrideAttrs (attrs: rec {
+      version = "8838";
       src = pkgs.fetchFromGitHub {
         owner = "ggml-org";
         repo = "llama.cpp";
-        tag = "b8664";
-        hash = "sha256-Y9FvhL+q8rvI+si0ctyhV9o4y+OWrVMHnXnz1iJqvqk=";
+        tag = "b${version}";
+        hash = "sha256-ansKERDwPFzJYkJmeNwSXFcyi1e9T+s8gbdV3ecyD6Q=";
       };
+      npmDepsHash = "sha256-RAFtsbBGBjteCt5yXhrmHL39rIDJMCFBETgzId2eRRk=";
       postPatch =
         builtins.replaceStrings
           [ "rm tools/server/public/index.html.gz" ]
@@ -53,7 +55,7 @@ in
     open = true;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    powerManagement.enable = true;
+    powerManagement.enable = false;
     powerManagement.finegrained = false;
     nvidiaSettings = true;
   };

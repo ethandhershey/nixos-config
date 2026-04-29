@@ -37,6 +37,8 @@
   # services.gnome.gnome-keyring.enable = true;
   # security.pam.services.swaylock = {};
 
+  programs.dconf.enable = true;
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     noto-fonts
@@ -70,7 +72,11 @@
         home.packages = with pkgs; [
           mission-center
           nautilus
+          # oculante
+          sniffnet
         ];
+
+        services.easyeffects.enable = true;
 
         programs.alacritty = {
           enable = true;

@@ -21,13 +21,13 @@ input {
 
 output "DP-1" {
     mode "2560x1440@144.000"
-    variable-refresh-rate on-demand=true
+    // variable-refresh-rate on-demand=true
     // transform "normal"
 }
 
 output "DP-2" {
     mode "2560x1440@144.000"
-    variable-refresh-rate on-demand=true
+    // variable-refresh-rate on-demand=true
     // transform "normal"
 }
 
