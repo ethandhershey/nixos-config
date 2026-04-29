@@ -63,6 +63,8 @@
     package = pkgs.mullvad-vpn;
   };
 
+  programs.sniffnet.enable = true;
+
   # --- home-manager ---
   home-manager.sharedModules = [
     inputs.noctalia.homeModules.default

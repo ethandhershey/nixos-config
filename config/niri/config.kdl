@@ -120,9 +120,9 @@ binds {
     Mod+Shift+F { fullscreen-window; }
     Mod+C { center-column; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print  { screenshot-window; }
+    Mod+P { screenshot; }
+    Mod+Ctrl+P { screenshot-screen; }
+    Mod+Shift+P  { screenshot-window; }
 
     // noctalia IPC
     Mod+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
