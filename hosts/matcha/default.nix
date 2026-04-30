@@ -8,19 +8,19 @@
 let
   llama-cpp =
     (pkgs.llama-cpp.overrideAttrs (attrs: rec {
-      version = "8838";
+      version = "8981";
       src = pkgs.fetchFromGitHub {
         owner = "ggml-org";
         repo = "llama.cpp";
         tag = "b${version}";
         hash = "sha256-ansKERDwPFzJYkJmeNwSXFcyi1e9T+s8gbdV3ecyD6Q=";
       };
-      npmDepsHash = "sha256-RAFtsbBGBjteCt5yXhrmHL39rIDJMCFBETgzId2eRRk=";
-      postPatch =
-        builtins.replaceStrings
-          [ "rm tools/server/public/index.html.gz" ]
-          [ "rm -f tools/server/public/index.html.gz" ]
-          (attrs.postPatch or "");
+      # npmDepsHash = "sha256-RAFtsbBGBjteCt5yXhrmHL39rIDJMCFBETgzId2eRRk=";
+      # postPatch =
+      #   builtins.replaceStrings
+      #     [ "rm tools/server/public/index.html.gz" ]
+      #     [ "rm -f tools/server/public/index.html.gz" ]
+      #     (attrs.postPatch or "");
       cmakeFlags = (attrs.cmakeFlags or [ ]) ++ [
         "-DGGML_NATIVE=ON"
       ];
@@ -67,6 +67,20 @@ in
   };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      gcc.cc.lib
+      zlib
+      openssl
+      libffi
+      glib
+      libGL
+      libcap_ng
+    ];
+  };
+
   home-manager.users.${user.name} = {
     home.username = user.name;
     home.homeDirectory = "/home/${user.name}";
@@ -77,6 +91,12 @@ in
       alejandra
       nodejs_22
       llama-cpp
+      rtk
+      uv
+      ruff
+      ty
+      opencode
+      codex
     ];
   };
   system.stateVersion = "25.05";
